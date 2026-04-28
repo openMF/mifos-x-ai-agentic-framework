@@ -1,0 +1,37 @@
+{
+  "loans": [
+    {
+      "loan_id": "loan-1001",
+      "client_id": "client-501",
+      "principal_outstanding": 12000,
+      "total_due": 850,
+      "total_paid": 9000,
+      "days_overdue": 5,
+      "missed_installments": 0,
+      "last_payment_days_ago": 12,
+      "officer_id": "officer-a"
+    },
+    {
+      "loan_id": "loan-1002",
+      "client_id": "client-502",
+      "principal_outstanding": 25000,
+      "total_due": 4200,
+      "total_paid": 3000,
+      "days_overdue": 38,
+      "missed_installments": 2,
+      "last_payment_days_ago": 31,
+      "officer_id": "officer-b"
+    },
+    {
+      "loan_id": "loan-1003",
+      "client_id": "client-503",
+      "principal_outstanding": 18000,
+      "total_due": 9200,
+      "total_paid": 700,
+      "days_overdue": 72,
+      "missed_installments": 4,
+      "last_payment_days_ago": 55,
+      "officer_id": "officer-c"
+    }
+  ]
+}
