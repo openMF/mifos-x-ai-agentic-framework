@@ -58,14 +58,19 @@ class PortfolioHealthAgent:
 
     def _create_agent(self):
         """Create the React agent"""
-        prompt = PromptTemplate.from_template("""
-You are a Portfolio Health Agent for a microfinance institution. Your role is to:
+        from langchain.prompts import PromptTemplate
+
+        prompt = PromptTemplate.from_template("""You are a Portfolio Health Agent for a microfinance institution. Your role is to:
 1. Monitor loan portfolios for accounts at risk
 2. Identify patterns and trends
 3. Execute pre-approved actions like sending reminders or scheduling follow-ups
 4. Escalate complex cases requiring human judgment
 
-You have access to tools to assess accounts, send communications, and escalate cases.
+You have access to the following tools:
+{tools}
+
+Tool names: {tool_names}
+
 Always provide clear reasoning for your decisions.
 
 Current date: {current_date}

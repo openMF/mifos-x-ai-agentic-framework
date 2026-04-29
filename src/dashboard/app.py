@@ -11,13 +11,30 @@ CORS(app)
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-mifos_client = MifosClient(
-    config.MIFOS_API_URL,
-    config.MIFOS_USERNAME,
-    config.MIFOS_PASSWORD
-)
+# Initialize lazily to avoid import errors
+_mifos_client = None
+_agent = None
 
-agent = PortfolioHealthAgent(mifos_client)
+def get_agent():
+    global _mifos_client, _agent
+    if _agent is None:
+        _mifos_client = MifosClient(
+            config.MIFOS_API_URL,
+            config.MIFOS_USERNAME,
+            config.MIFOS_PASSWORD
+        )
+        _agent = PortfolioHealthAgent(_mifos_client)
+    return _agent
+
+def get_client():
+    global _mifos_client
+    if _mifos_client is None:
+        _mifos_client = MifosClient(
+            config.MIFOS_API_URL,
+            config.MIFOS_USERNAME,
+            config.MIFOS_PASSWORD
+        )
+    return _mifos_client
 
 @app.route("/api/health", methods=["GET"])
 def health_check():
@@ -27,7 +44,7 @@ def health_check():
 def get_portfolio():
     """Get portfolio overview"""
     try:
-        portfolio = agent.monitor_portfolio()
+        portfolio = get_agent().monitor_portfolio()
         return jsonify(portfolio), 200
     except Exception as e:
         logger.error(f"Error fetching portfolio: {e}")
@@ -37,7 +54,7 @@ def get_portfolio():
 def get_high_risk():
     """Get high-risk accounts only"""
     try:
-        portfolio = agent.monitor_portfolio()
+        portfolio = get_agent().monitor_portfolio()
         return jsonify({
             "count": portfolio["high_risk_count"],
             "accounts": portfolio["high_risk_accounts"]
@@ -50,7 +67,8 @@ def get_high_risk():
 def get_account_risk(account_id):
     """Get risk assessment for specific account"""
     try:
-        account = mifos_client.get_account_details(account_id)
+        agent = get_agent()
+        account = get_client().get_account_details(account_id)
         score, risk_level, factors = agent.risk_engine.calculate_risk_score(account)
         return jsonify({
             "account_id": account_id,
@@ -66,7 +84,7 @@ def get_account_risk(account_id):
 def get_recommended_actions():
     """Get recommended actions for portfolio"""
     try:
-        actions = agent.process_high_risk_accounts()
+        actions = get_agent().process_high_risk_accounts()
         return jsonify({
             "actions": actions,
             "count": len(actions)
@@ -82,14 +100,15 @@ def approve_action(action_id):
         data = request.json
         action_type = data.get("type")
         client_id = data.get("client_id")
+        client = get_client()
 
         executed = False
         if action_type == "send_reminder":
-            executed = mifos_client.send_reminder(client_id, data.get("message", ""))
+            executed = client.send_reminder(client_id, data.get("message", ""))
         elif action_type == "schedule_followup":
-            executed = mifos_client.schedule_followup(client_id, data.get("date"))
+            executed = client.schedule_followup(client_id, data.get("date"))
         elif action_type == "escalate":
-            executed = mifos_client.escalate_case(
+            executed = client.escalate_case(
                 client_id,
                 data.get("reason"),
                 data.get("officer_id", 1)
@@ -119,6 +138,7 @@ def reject_action(action_id):
 def get_decisions_log():
     """Get log of agent decisions"""
     try:
+        agent = get_agent()
         return jsonify({
             "decisions": agent.decisions_log,
             "count": len(agent.decisions_log)

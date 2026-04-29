@@ -14,11 +14,11 @@ class RiskAssessmentEngine:
         """
         factors = {}
         weights = {
-            "arrears_days": 0.35,
+            "arrears_days": 0.50,
             "repayment_rate": 0.25,
-            "account_age": 0.15,
-            "loan_amount_ratio": 0.15,
-            "missed_payments": 0.10
+            "account_age": 0.10,
+            "loan_amount_ratio": 0.10,
+            "missed_payments": 0.05
         }
 
         # Parse account data
@@ -92,9 +92,15 @@ class RiskAssessmentEngine:
         """Normalize arrears days to 0-1 scale"""
         if days == 0:
             return 0
-        if days > 180:
+        if days >= 120:
             return 1.0
-        return days / 180
+        if days >= 60:
+            return 0.85
+        if days >= 30:
+            return 0.6
+        if days >= 15:
+            return 0.3
+        return days / 50
 
     def _normalize_account_age(self, months: int) -> float:
         """Newer accounts are riskier"""
@@ -112,9 +118,9 @@ class RiskAssessmentEngine:
         """Normalize missed payments"""
         if missed == 0:
             return 0
-        if missed > 5:
+        if missed > 10:
             return 1.0
-        return missed / 5
+        return min(1.0, missed / 10)
 
     def _classify_risk(self, score: float) -> str:
         """Classify risk level based on score"""
