@@ -24,21 +24,11 @@ Explainable: The AI must explain its reasoning in human-readable terms, ensuring
 
 
 
-🛠️ Key Components
-
-Risk Scoring Engine: Continuously monitors loan portfolios in Mifos X to flag at-risk accounts.
-
-
-
-Reasoning Framework (LangChain): Uses LLMs to analyze borrower context and payment history.
-
-
-
-Action Executor: Handles pre-approved follow-ups like automated SMS reminders or task scheduling.
-
-
-
-Human-in-the-loop Dashboard: A user interface within the Mifos X Web App where officers review AI logic and adjust autonomy levels.
+ Key Components & Compliance
+**Proactive Risk Detection:** Continuously monitors loan portfolios in **Mifos X** to flag 'At-Risk' accounts by analyzing delinquency trends before the first payment is missed.
+**Reasoning Framework (LangChain):** Uses LLMs to analyze borrower context, incorporating interpretability principles from **Anthropic's research** to ensure AI safety.
+**Explainable Action Executor:** Handles pre-approved follow-ups (SMS/calls) while adhering strictly to **FINRA guidelines** on Agentic AI in finance.
+**Human-in-the-loop Dashboard:** A UI within the Mifos X Web App where the agent suggests interventions, but the final decision remains entirely with the Loan Officer.
 
 
 
