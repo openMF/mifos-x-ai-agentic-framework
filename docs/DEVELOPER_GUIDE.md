@@ -1,4 +1,4 @@
-\# 🛠️ Extending the Mifos AI Agent: Developer Guide
+ Extending the Mifos AI Agent: Developer Guide
 
 
 
@@ -10,43 +10,43 @@ This living document will walk you through the process of extending our AI agent
 
 
 
-\---
+-------------------
 
 
 
-\## 💻 1. Local Development \& Environment Setup
+1. Local Development \& Environment Setup
 
 Before extending the agent, you need a safe sandbox to test your ideas without affecting real financial data.
 
 
 
-\### Prerequisites
+ Prerequisites
 
-\- Python 3.10+
+ Python 3.10+
 
-\- `pipenv` or `conda` for environment management
+ `pipenv` or `conda` for environment management
 
-\- Access to a sandbox/test instance of Mifos X (Do NOT use production credentials).
-
-
-
-\### Setup Steps
-
-1\. \*\*Clone your fork:\*\* `git clone https://github.com/<your-username>/mifos-x-ai-agentic-framework.git`
-
-2\. \*\*Install dependencies:\*\* `pip install -r requirements.txt`
-
-3\. \*\*Environment Variables:\*\* Copy `.env.example` to `.env` and add your test API keys (e.g., OpenAI/Anthropic keys and Mifos Test Tenant URL).
-
-4\. \*\*Run the mock server:\*\* Use `python mock\_mifos\_server.py` to simulate API responses for testing.
+ Access to a sandbox/test instance of Mifos X (Do NOT use production credentials).
 
 
 
-\---
+ Setup Steps
+
+1. **Clone your fork:** `git clone https://github.com/<your-username>/mifos-x-ai-agentic-framework.git`
+
+2. **Install dependencies:** `pip install -r requirements.txt`
+
+3. **Environment Variables:** Copy `.env.example` to `.env` and add your test API keys (e.g., OpenAI/Anthropic keys and Mifos Test Tenant URL).
+
+4. **Run the mock server:** Use `python mock_mifos_server.py` to simulate API responses for testing.
 
 
 
-\## 🧠 2. Understanding the Agent's Architecture
+--------------------------------------------------
+
+
+
+ 2. Understanding the Agent's Architecture
 
 Our agent operates on a \*\*Reasoning Engine\*\* (powered by LangChain) and an \*\*Action Executor\*\*. It reads borrower data, reasons through the context using our prompt templates, and suggests actions. 
 
@@ -54,19 +54,19 @@ Our agent operates on a \*\*Reasoning Engine\*\* (powered by LangChain) and an \
 
 To extend the agent, you will generally modify one of three areas:
 
-\* \*\*Tools:\*\* Giving the agent new abilities (e.g., SMS integration).
+ **Tools:** Giving the agent new abilities (e.g., SMS integration).
 
-\* \*\*Prompts:\*\* Changing how the agent "thinks" and formulates empathy.
+ **Prompts:** Changing how the agent "thinks" and formulates empathy.
 
-\* \*\*Data Pipelines:\*\* Feeding the agent new types of risk-scoring information.
-
-
-
-\---
+ **Data Pipelines:** Feeding the agent new types of risk-scoring information.
 
 
 
-\## 🚀 3. How to Add a New Tool (Action)
+--------------------------------------------------------------
+
+
+
+3. How to Add a New Tool (Action)
 
 Tools are isolated functions the LLM can call. We strictly follow the Single Responsibility Principle.
 
