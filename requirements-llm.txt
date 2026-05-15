@@ -1,0 +1,28 @@
+# Extended requirements for LLM support
+# Base requirements (from main requirements.txt)
+langchain==0.2.0
+openai>=0.27.0
+flask>=2.3.0
+python-dotenv>=1.0.0
+requests>=2.31.0
+
+# Local LLM Support
+ollama>=0.1.0  # Ollama Python client
+langchain-community>=0.0.10  # For Ollama integration
+
+# HuggingFace Support (optional)
+huggingface-hub>=0.16.0  # For HuggingFace models
+
+# Performance & Monitoring
+pytest>=7.4.0  # Testing
+pytest-benchmark>=4.0.0  # Performance benchmarks
+pytest-mock>=3.11.0  # Mocking for tests
+
+# Utilities
+pydantic>=2.0.0  # Data validation
+python-dateutil>=2.8.2  # Date utilities
+pyyaml>=6.0  # YAML configuration
+
+# Optional: GPU Support
+# torch>=2.0.0  # Uncomment for NVIDIA GPU support
+# cuda-toolkit>=11.8  # Uncomment for CUDA support
